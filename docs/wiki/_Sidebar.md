@@ -1,0 +1,17 @@
+### Secure Azure Platform
+
+- [Home](Home)
+- [Architecture](Architecture)
+- [Getting Started](Getting-Started)
+- [Configuration](Configuration)
+- [Module Reference](Module-Reference)
+- [Private Networking](Private-Networking)
+- [RBAC](RBAC)
+- [Remote State](Remote-State)
+- [CI/CD](CI-CD)
+- [Security](Security)
+- [Testing](Testing)
+- [Operations](Operations)
+- [Troubleshooting](Troubleshooting)
+- [Disaster Recovery](Disaster-Recovery)
+- [Design Decisions](Design-Decisions)

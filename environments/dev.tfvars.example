@@ -1,0 +1,14 @@
+project_name = "atlas"
+environment  = "dev"
+location     = "northeurope"
+vnet_cidr    = "10.40.0.0/16"
+
+# Replace with an image digest produced by your delivery pipeline.
+container_image = "ghcr.io/example/portfolio-api@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+
+allowed_ingress_cidrs = ["203.0.113.0/24"]
+
+tags = {
+  cost_center = "engineering"
+  owner       = "platform-team"
+}

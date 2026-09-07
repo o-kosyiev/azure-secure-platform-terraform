@@ -1,0 +1,6 @@
+resource_group_name  = "rg-terraform-state"
+storage_account_name = "replacewithuniquestorage"
+container_name       = "tfstate"
+key                  = "azure-secure-platform/dev.tfstate"
+use_azuread_auth     = true
+use_oidc             = true
