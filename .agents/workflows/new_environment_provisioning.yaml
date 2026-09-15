@@ -1,0 +1,36 @@
+name: "New Environment Provisioning"
+description: "End-to-end workflow for provisioning a new infrastructure environment securely."
+steps:
+  - name: "Git Sync & Pre-Flight"
+    action: "invoke_skill"
+    skill: "git_sync_enforcer"
+    description: "Ensure the local repository is up to date and clean."
+
+  - name: "Terraform Format and Validate"
+    action: "run_command"
+    command: "terraform fmt -check && terraform validate"
+    working_dir: "infra/"
+
+  - name: "DevSecOps Scan"
+    action: "invoke_skill"
+    skill: "iac_security_and_compliance_scanning"
+    description: "Run checkov or tfsec to ensure no critical vulnerabilities exist in the new environment config."
+
+  - name: "Terraform Plan"
+    action: "run_command"
+    command: "terraform plan -out=tfplan"
+    working_dir: "infra/"
+
+  - name: "User Approval for Plan"
+    action: "wait_for_user"
+    description: "Present the plan to the user and wait for explicit approval before applying."
+
+  - name: "Terraform Apply"
+    action: "run_command"
+    command: "terraform apply tfplan"
+    working_dir: "infra/"
+
+  - name: "Update Documentation"
+    action: "invoke_skill"
+    skill: "documentation_enforcer"
+    description: "Record the newly provisioned environment details in the docs directory."

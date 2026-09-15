@@ -1,0 +1,88 @@
+version: 1
+project: GenAI-X Research
+purpose: Project-local workstation and CI authoring toolchain for Phase 1/Phase 2 implementation.
+
+path_hints:
+  homebrew_bin: /opt/homebrew/bin
+  antigravity_bin: /Users/Oleksii_Kosyiev/.local/bin/agy
+  local_azure_config_dir: .local/azure
+
+required_cli:
+  core:
+    - {command: git, purpose: "source inspection and future EPAM GitLab project work"}
+    - {command: jq, purpose: "JSON validation and plan/result filtering"}
+    - {command: yq, purpose: "YAML validation and variable catalogue checks"}
+    - {command: node, purpose: "frontend/tooling scripts and Mermaid rendering support"}
+    - {command: npm, purpose: "Node tooling dependency installation"}
+    - {command: python3, purpose: "local validation and helper scripts"}
+    - {command: uv, purpose: "Python virtualenv and tool dependency management"}
+  cloud_and_iac:
+    - {command: az, purpose: "Azure read-only checks, login validation, and scripted preflight"}
+    - {command: terraform, purpose: "Terraform init/validate/plan/fmt"}
+    - {command: tflint, purpose: "Terraform linting"}
+    - {command: checkov, purpose: "IaC policy scanning"}
+    - {command: trivy, purpose: "filesystem/container/SBOM/security scanning"}
+    - {command: infracost, purpose: "cost estimate checks where enabled"}
+    - {command: terraform-docs, purpose: "Terraform module documentation generation"}
+    - {command: databricks, purpose: "Databricks bundle, workspace, and Lakeflow/Vector validation"}
+    - {command: shellcheck, purpose: "shell script static analysis"}
+    - {command: shfmt, purpose: "shell script formatting"}
+    - {command: hadolint, purpose: "Dockerfile linting"}
+    - {command: syft, purpose: "SBOM generation"}
+    - {command: grype, purpose: "vulnerability scanning from SBOM/filesystem/image inputs"}
+    - {command: cosign, purpose: "container provenance and signature workflow support"}
+    - {command: crane, purpose: "OCI registry manifest, digest, and layer inspection"}
+    - {command: oras, purpose: "OCI artifact inspection and transfer support"}
+  ci_and_container:
+    - {command: glab, purpose: "EPAM GitLab project/pipeline interaction after authentication"}
+    - {command: docker, purpose: "local OCI image checks when runtime is available"}
+    - {command: docker-buildx, purpose: "BuildKit builder plugin checks"}
+    - {command: colima, purpose: "local container runtime on macOS"}
+    - {command: buildctl, purpose: "direct BuildKit client checks"}
+  docs_and_review:
+    - {command: mmdc, purpose: "Mermaid diagram rendering/visual QA"}
+    - {command: agy, purpose: "Antigravity CLI support"}
+
+install_sources:
+  homebrew_formulae:
+    - glab
+    - yq
+    - checkov
+    - trivy
+    - infracost
+    - terraform-docs
+    - uv
+    - docker
+    - docker-buildx
+    - colima
+    - buildkit
+    - databricks/tap/databricks
+    - shellcheck
+    - shfmt
+    - hadolint
+    - syft
+    - grype
+    - cosign
+    - crane
+    - oras
+  homebrew_casks:
+    - terraform-linters/tap/tflint
+  preexisting_or_external:
+    - {command: az, note: "already installed through Homebrew on this workstation"}
+    - {command: terraform, note: "already installed through Homebrew/HashiCorp tap on this workstation"}
+    - {command: node, note: "already installed through Homebrew on this workstation"}
+    - {command: npm, note: "already installed with Node on this workstation"}
+    - {command: mmdc, note: "already installed globally; project check verifies it"}
+    - {command: agy, note: "installed at /Users/Oleksii_Kosyiev/.local/bin/agy; project PATH must expose it"}
+
+local_dependencies:
+  python_requirements: requirements-dev.txt
+  python_virtualenv: .venv
+  node_manifest: package.json
+
+guardrails:
+  - "Do not run terraform apply/destroy from local tooling without explicit approval."
+  - "Do not use glab against git.epam.com until the project URL and authentication are explicitly configured."
+  - "Do not pass secrets, tfvars, state, or environment files to Antigravity."
+  - "Use AZURE_CONFIG_DIR=.local/azure for local Azure CLI validation to avoid sandbox/global-session collisions."
+  - "Container runtime startup through Colima is manual because it consumes local CPU/RAM and may change host runtime state."
